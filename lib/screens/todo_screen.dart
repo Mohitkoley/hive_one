@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_one/boxes.dart';
 import 'package:hive_one/model/todo.dart';
+import 'package:intl/intl.dart';
 import 'add_todo_screen.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -31,11 +32,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
           valueListenable: Hive.box<Todo>(HiveBoxes.todo).listenable(),
           builder: (context, Box<Todo> box, _) {
             if (box.values.isEmpty) {
-              return Center(child: const Text("There is no value"));
+              return const Center(child: Text("There are no Tasks"));
             }
             return ListView.builder(
                 itemCount: box.values.length,
                 itemBuilder: (context, index) {
+                  DateFormat _dateFormat = DateFormat("dd MMM, hh:mm a");
                   Todo? res = box.getAt(index);
                   return Dismissible(
                     background: Container(color: Colors.red),
@@ -47,8 +49,18 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 12.0),
                       textColor: Colors.blueAccent,
-                      title: Text(res!.title),
-                      subtitle: Text(res.description),
+                      leading: Text(
+                        "${index + 1}",
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                      title: Text(res!.title,
+                          style: const TextStyle(fontSize: 25.0)),
+                      subtitle: Text(res.description,
+                          style: const TextStyle(fontSize: 25.0)),
+                      trailing: Text(
+                        _dateFormat.format(res.date),
+                        style: const TextStyle(fontSize: 25.0),
+                      ),
                     ),
                   );
                 });

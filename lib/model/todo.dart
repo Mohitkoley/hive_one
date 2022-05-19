@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'todo.g.dart';
@@ -13,5 +14,12 @@ class Todo extends HiveObject {
   @HiveField(2)
   final String description;
 
-  Todo({required this.title, required this.description});
+  @HiveField(3)
+  final DateTime date;
+
+  Todo({
+    required this.title,
+    required this.description,
+    required this.date,
+  });
 }
